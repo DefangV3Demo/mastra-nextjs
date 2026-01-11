@@ -22,3 +22,5 @@ jobs:
         with:
           stack: production
           provider: aws
+        env:
+          AWS_REGION: us-west-2
