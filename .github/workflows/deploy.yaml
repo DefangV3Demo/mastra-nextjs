@@ -21,3 +21,4 @@ jobs:
         uses: DefangLabs/defang-github-action@v1.3.0
         with:
           stack: production
+          provider: aws
