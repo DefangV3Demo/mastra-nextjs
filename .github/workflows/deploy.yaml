@@ -17,12 +17,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::933841849165:role/github-actions
-          aws-region: us-west-2
-
       - name: Deploy
         uses: DefangLabs/defang-github-action@v1.3.0
         with:
@@ -30,3 +24,4 @@ jobs:
           provider: aws
         env:
           AWS_REGION: us-west-2
+          AWS_ROLE_ARN: arn:aws:iam::933841849165:role/defang-cd-CIRole
