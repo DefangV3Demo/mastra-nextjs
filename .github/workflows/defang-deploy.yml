@@ -1,0 +1,50 @@
+name: Defang Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Whether to deploy up or down"
+        required: true
+        default: "up"
+        type: choice
+        options:
+          - up
+          - down
+      stack:
+        description: "The stack to deploy up or down. (Leave blank for default)"
+        default: "potato"
+
+jobs:
+  defang:
+    name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'potato' }}
+    environment: potato
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    concurrency:
+      cancel-in-progress: false
+      group: deploy-mastra-nextjs-${{ github.event.inputs.stack || 'potato' }}
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'potato' }}
+        uses: DefangLabs/defang-github-action@v1.4.0
+        with:
+          command: ${{ github.event.inputs.action || 'up' }}
+          project: mastra-nextjs
+          stack: ${{ github.event.inputs.stack || 'potato' }}
+
+      - name: Deployment Summary
+        uses: DefangLabs/defang-github-action@v1.4.0
+        with:
+          command: services
+          project: mastra-nextjs
+          stack: ${{ github.event.inputs.stack || 'potato' }}
