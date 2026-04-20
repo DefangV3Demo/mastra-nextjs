@@ -17,6 +17,11 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
     depends_on:
       - database
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.5"
+          memory: 512M
 
   database:
     image: postgres:16
@@ -34,3 +39,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.5"
+          memory: 512M
